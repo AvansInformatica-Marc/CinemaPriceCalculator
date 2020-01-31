@@ -1,2 +1,2 @@
-# CinemaPriceCalculator ![Java CI](https://github.com/AvansInformatica-Marc/CinemaPriceCalculator/workflows/Java%20CI/badge.svg)
+# CinemaPriceCalculator [![Java CI](https://github.com/AvansInformatica-Marc/CinemaPriceCalculator/workflows/Java%20CI/badge.svg)](https://github.com/AvansInformatica-Marc/CinemaPriceCalculator/actions?query=workflow%3A%22Java+CI%22) [![codecov](https://codecov.io/gh/AvansInformatica-Marc/CinemaPriceCalculator/branch/master/graph/badge.svg)](https://codecov.io/gh/AvansInformatica-Marc/CinemaPriceCalculator)
  
