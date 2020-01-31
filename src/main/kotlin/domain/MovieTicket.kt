@@ -1,7 +1,8 @@
 package domain
 
-class MovieTicket(
+data class MovieTicket(
     private val movieScreening: MovieScreening,
+    val isStudentOrder: Boolean,
     val isPremiumTicket: Boolean,
     private val seatRow: Int,
     private val seatNr: Int

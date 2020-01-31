@@ -11,47 +11,43 @@ class OrderPriceTests {
     @Test
     fun `Ticket price returns normal price when there's no discount`() {
         // Arrange
-        val movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY)
-
-        val tickets = Array(3) {
-            MovieTicket(movieScreening, false, 1, it)
-        }
-
-        val order = Order(1, false)
-        for(ticket in tickets)
-            order.addSeatReservation(ticket)
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = false,
+            isPremiumTicket = false,
+            seatRow = 1,
+            seatNr = 1
+        )
 
         // Act
-        val effectivePricesPerTicket = order.getEffectivePricesPerTicket()
+        val price = calculatePriceForTicket(4, 3, ticket)
 
         // Assert
-        tickets.forEach {
-            assertEquals(effectivePricesPerTicket[it] ?: -1.0, pricePerSeat, 0.0)
-        }
+        assertEquals(price, pricePerSeat)
     }
 
     @Test
-    fun `The second ticket for students is always free`() {
+    fun `The second ticket for students is always free, but the first and third are not`() {
         // Arrange
-        val movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY)
-
-        val tickets = Array(5) {
-            MovieTicket(movieScreening, false, 1, it)
-        }
-
-        val order = Order(2, true)
-        for(ticket in tickets)
-            order.addSeatReservation(ticket)
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = true,
+            isPremiumTicket = false,
+            seatRow = 1,
+            seatNr = 1
+        )
 
         // Act
-        val effectivePricesPerTicket = order.getEffectivePricesPerTicket()
+        val prices = Array(5) {
+            calculatePriceForTicket(3, it, ticket)
+        }
 
         // Assert
-        for(ticket in tickets) {
-            val isEven = tickets.indexOf(ticket) == 1 || tickets.indexOf(ticket) == 3
-            val expectedPrice = if(isEven) 0.0 else pricePerSeat
-            assertEquals(effectivePricesPerTicket[ticket] ?: -1.0, expectedPrice, 0.0)
-        }
+        assertEquals(prices[0], pricePerSeat)
+        assertEquals(prices[1], 0.0)
+        assertEquals(prices[2], pricePerSeat)
+        assertEquals(prices[3], 0.0)
+        assertEquals(prices[4], pricePerSeat)
     }
 
     @Test
@@ -65,25 +61,25 @@ class OrderPriceTests {
 
         for((dayOfWeek, isTicketFree) in testList) {
             // Arrange
-            val movieScreening = getScreeningForWeekDay(dayOfWeek)
-
-            val tickets = Array(5) {
-                MovieTicket(movieScreening, false, 1, it)
-            }
-
-            val order = Order(2, false)
-            for(ticket in tickets)
-                order.addSeatReservation(ticket)
+            val ticket = MovieTicket(
+                movieScreening = getScreeningForWeekDay(dayOfWeek),
+                isStudentOrder = false,
+                isPremiumTicket = false,
+                seatRow = 1,
+                seatNr = 1
+            )
 
             // Act
-            val effectivePricesPerTicket = order.getEffectivePricesPerTicket()
+            val prices = Array(5) {
+                calculatePriceForTicket(3, it, ticket)
+            }
 
             // Assert
-            for(ticket in tickets) {
-                val isEven = tickets.indexOf(ticket) == 1 || tickets.indexOf(ticket) == 3
-                val expectedPrice = if(isEven && isTicketFree) 0.0 else pricePerSeat
-                assertEquals(effectivePricesPerTicket[ticket] ?: -1.0, expectedPrice, 0.0)
-            }
+            assertEquals(prices[0], pricePerSeat)
+            assertEquals(prices[1], if(isTicketFree) 0.0 else pricePerSeat)
+            assertEquals(prices[2], pricePerSeat)
+            assertEquals(prices[3], if(isTicketFree) 0.0 else pricePerSeat)
+            assertEquals(prices[4], pricePerSeat)
         }
     }
 
@@ -97,21 +93,21 @@ class OrderPriceTests {
 
         for((ticketCount, hasDiscount) in testSizes) {
             // Arrange
-            val movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY)
-
-            val tickets = Array(ticketCount) {
-                MovieTicket(movieScreening, false, 1, it)
-            }
-
-            val order = Order(4, false)
-            for(ticket in tickets)
-                order.addSeatReservation(ticket)
+            val ticket = MovieTicket(
+                movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+                isStudentOrder = false,
+                isPremiumTicket = false,
+                seatRow = 1,
+                seatNr = 1
+            )
 
             // Act
-            val prices = order.getEffectivePricesPerTicket()
+            val prices = Array(ticketCount) {
+                calculatePriceForTicket(ticketCount, it, ticket)
+            }
 
             // Assert
-            assertTrue(prices.all { it.value == if(hasDiscount) 2.25 else 2.50 })
+            assertTrue(prices.all { it == if(hasDiscount) 2.25 else 2.50 })
         }
     }
 

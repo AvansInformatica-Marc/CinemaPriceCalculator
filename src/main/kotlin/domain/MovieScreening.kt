@@ -2,7 +2,7 @@ package domain
 
 import java.time.LocalDateTime
 
-class MovieScreening(
+data class MovieScreening(
     private val movie: Movie,
     private val dateAndTime: LocalDateTime,
     val pricePerSeat: Double
