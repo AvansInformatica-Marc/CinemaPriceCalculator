@@ -19,3 +19,5 @@ jobs:
       run: ./gradlew build
     - name: Run JaCoCo
       run: ./gradlew jacocoTestReport
+    - name: Upload coverage reports
+      run: bash <(curl -s https://codecov.io/bash)
