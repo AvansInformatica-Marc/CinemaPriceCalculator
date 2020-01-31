@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     kotlin("jvm") version "1.3.61"
+    jacoco
 }
 
 group = "nl.marc"
@@ -20,6 +21,17 @@ dependencies {
 
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = false
+    }
+}
+
+tasks.check {
+    dependsOn(tasks.jacocoTestReport)
 }
 
 tasks.test {
