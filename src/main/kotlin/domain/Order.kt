@@ -4,17 +4,21 @@ import domain.TicketExportFormat.JSON
 import domain.TicketExportFormat.PLAINTEXT
 
 data class Order(val orderNr: Int) {
-    val tickets = mutableListOf<MovieTicket>()
+    private val tickets = mutableListOf<MovieTicket>()
 
     fun addSeatReservation(ticket: MovieTicket) {
         tickets += ticket
     }
 
     fun calculatePrice(): Double {
+        val prices = tickets.mapIndexed { index, ticket ->
+            calculatePriceForTicket(tickets.size, index, ticket)
+        }
+
         var totalPrice = 0.0
 
-        for(ticket in tickets)
-            totalPrice += calculatePriceForTicket(tickets.size, tickets.indexOf(ticket), ticket)
+        for(price in prices)
+            totalPrice += price
 
         return totalPrice
     }
