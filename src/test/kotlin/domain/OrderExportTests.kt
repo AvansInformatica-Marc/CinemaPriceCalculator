@@ -1,6 +1,5 @@
 package domain
 
-import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.Test
 
 class OrderExportTests {
@@ -13,7 +12,7 @@ class OrderExportTests {
         val text = order.getExportedFileContent(TicketExportFormat.PLAINTEXT)
 
         // Assert
-        assertEquals(text, "")
+        assertEquals(actual = text, expected = "")
     }
 
     @Test
@@ -25,6 +24,6 @@ class OrderExportTests {
         val text = order.getExportedFileContent(TicketExportFormat.JSON)
 
         // Assert
-        assertEquals(text.replace("\n", "").trim(), "[]")
+        assertEquals(actual = text.replace("\n", "").trim(), expected = "[]")
     }
 }

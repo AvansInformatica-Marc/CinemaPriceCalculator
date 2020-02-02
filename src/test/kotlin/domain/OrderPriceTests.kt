@@ -1,7 +1,5 @@
 package domain
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -23,11 +21,11 @@ class OrderPriceTests {
         val price = calculatePriceForTicket(4, 3, ticket)
 
         // Assert
-        assertEquals(price, pricePerSeat)
+        assertEquals(actual = price, expected = pricePerSeat)
     }
 
     @Test
-    fun `The second ticket for students is always free, but the first and third are not`() {
+    fun `The second ticket for students is always free`() {
         // Arrange
         val ticket = MovieTicket(
             movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
@@ -43,11 +41,11 @@ class OrderPriceTests {
         }
 
         // Assert
-        assertEquals(prices[0], pricePerSeat)
-        assertEquals(prices[1], 0.0)
-        assertEquals(prices[2], pricePerSeat)
-        assertEquals(prices[3], 0.0)
-        assertEquals(prices[4], pricePerSeat)
+        assertEquals(actual = prices[0], expected = pricePerSeat)
+        assertEquals(actual = prices[1], expected = 0.0)
+        assertEquals(actual = prices[2], expected = pricePerSeat)
+        assertEquals(actual = prices[3], expected = 0.0)
+        assertEquals(actual = prices[4], expected = pricePerSeat)
     }
 
     @Test
@@ -75,11 +73,11 @@ class OrderPriceTests {
             }
 
             // Assert
-            assertEquals(prices[0], pricePerSeat)
-            assertEquals(prices[1], if(isTicketFree) 0.0 else pricePerSeat)
-            assertEquals(prices[2], pricePerSeat)
-            assertEquals(prices[3], if(isTicketFree) 0.0 else pricePerSeat)
-            assertEquals(prices[4], pricePerSeat)
+            assertEquals(actual = prices[0], expected = pricePerSeat)
+            assertEquals(actual = prices[1], expected = if(isTicketFree) 0.0 else pricePerSeat)
+            assertEquals(actual = prices[2], expected = pricePerSeat)
+            assertEquals(actual = prices[3], expected = if(isTicketFree) 0.0 else pricePerSeat)
+            assertEquals(actual = prices[4], expected = pricePerSeat)
         }
     }
 
@@ -107,8 +105,27 @@ class OrderPriceTests {
             }
 
             // Assert
-            assertTrue(prices.all { it == if(hasDiscount) 2.25 else 2.50 })
+            assertTrue(prices.all { it == if(hasDiscount) 2.25 else pricePerSeat })
         }
+    }
+
+
+    @Test
+    fun `Students don't get group discounts`() {
+        // Arrange
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = true,
+            isPremiumTicket = false,
+            seatRow = 1,
+            seatNr = 1
+        )
+
+        // Act
+        val price = calculatePriceForTicket(7, 0, ticket)
+
+        // Assert
+        assertEquals(actual = price, expected = pricePerSeat)
     }
 
     companion object {
