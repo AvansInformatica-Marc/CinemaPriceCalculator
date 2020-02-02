@@ -1,5 +1,6 @@
 package domain
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class MovieScreening(
@@ -7,7 +8,7 @@ data class MovieScreening(
     private val dateAndTime: LocalDateTime,
     val pricePerSeat: Double
 ) {
-    val date = dateAndTime.toLocalDate()
+    val date = dateAndTime.toLocalDate() as LocalDate
 
     init {
         movie.addScreening(this)
