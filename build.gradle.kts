@@ -20,7 +20,7 @@ dependencies {
     implementation("org.koin", "koin-core", "2.0.1")
 
     testImplementation("org.koin", "koin-test", "2.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.6.0")
 }
 
 configure<JavaPluginConvention> {
