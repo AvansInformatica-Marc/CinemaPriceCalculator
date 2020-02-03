@@ -25,6 +25,8 @@ jobs:
         tee -a gradle.properties <<< "sonar.organization=${{ secrets.sonar_organization }}"
         tee -a gradle.properties <<< "sonar.host.url=${{ secrets.sonar_host_url }}"
         tee -a gradle.properties <<< "sonar.login=${{ secrets.sonar_login }}"
-        cat gradle.properties
     - name: Run sonarqube
       run: ./gradlew sonarqube
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
