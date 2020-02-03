@@ -11,12 +11,16 @@ version = "1.0"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.3.3")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+    implementation("org.koin", "koin-core", "2.0.1")
+
+    testImplementation("org.koin", "koin-test", "2.0.1")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.6.0")
 }
 
 configure<JavaPluginConvention> {
