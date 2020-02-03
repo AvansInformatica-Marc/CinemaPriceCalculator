@@ -19,11 +19,9 @@ jobs:
       run: ./gradlew build
     - name: Run JaCoCo
       run: ./gradlew jacocoTestReport
-    - name: Upload coverage reports
-      run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
     - name: Modify gradle.properties for sonarqube secrets
       run: |
-        echo "sonar.projectKey=${{ secrets.sonar_projectKey }}" << gradle.properties
+        echo "sonar.projectKey=${{ secrets.sonar_projectKey }}" < gradle.properties
         echo "sonar.organization=${{ secrets.sonar_organization }}" << gradle.properties
         echo "sonar.host.url=${{ secrets.sonar_host_url }}" << gradle.properties
         echo "sonar.login=${{ secrets.sonar_login }}" << gradle.properties
