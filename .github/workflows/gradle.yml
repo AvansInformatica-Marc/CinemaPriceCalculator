@@ -18,9 +18,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
-    - name: Run code checks
-      run: ./gradlew check
+      run: ./gradlew clean build
     - name: Modify gradle.properties for sonarqube secrets
       run: |
         tee -a gradle.properties <<< "sonar.projectKey=${{ secrets.sonar_projectKey }}"
