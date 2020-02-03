@@ -20,7 +20,7 @@ jobs:
     - name: Run JaCoCo
       run: ./gradlew jacocoTestReport
     - name: Modify gradle.properties for sonarqube secrets
-      run: printf "sonar.projectKey=${{ secrets.sonar_projectKey }}\nsonar.organization=${{ secrets.sonar_organization }}\nsonar.host.url=${{ secrets.sonar_host_url }}\nsonar.login=${{ secrets.sonar_login }}" < gradle.properties
+      run: tee -a gradle.properties <<< "sonar.projectKey=${{ secrets.sonar_projectKey }}\nsonar.organization=${{ secrets.sonar_organization }}\nsonar.host.url=${{ secrets.sonar_host_url }}\nsonar.login=${{ secrets.sonar_login }}"
     - name: Read gradle.properties
       run: cat gradle.properties
     - name: Run sonarqube
