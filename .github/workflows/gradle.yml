@@ -19,14 +19,8 @@ jobs:
       run: ./gradlew build
     - name: Run JaCoCo
       run: ./gradlew jacocoTestReport
-    - name: Modify gradle.properties for sonarqube secrets (part 1 of 4)
-      run: echo "sonar.projectKey=${{ secrets.sonar_projectKey }}" << gradle.properties
-    - name: Modify gradle.properties for sonarqube secrets (part 2 of 4)
-      run: echo "sonar.organization=${{ secrets.sonar_organization }}" << gradle.properties
-    - name: Modify gradle.properties for sonarqube secrets (part 3 of 4)
-      run: echo "sonar.host.url=${{ secrets.sonar_host_url }}" << gradle.properties
-    - name: Modify gradle.properties for sonarqube secrets (part 4 of 4)
-      run: echo "sonar.login=${{ secrets.sonar_login }}" << gradle.properties
+    - name: Modify gradle.properties for sonarqube secrets
+      run: printf "sonar.projectKey=${{ secrets.sonar_projectKey }}\nsonar.organization=${{ secrets.sonar_organization }}\nsonar.host.url=${{ secrets.sonar_host_url }}\nsonar.login=${{ secrets.sonar_login }}" < gradle.properties
     - name: Read gradle.properties
       run: cat gradle.properties
     - name: Run sonarqube
