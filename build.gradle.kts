@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.sonarqube.gradle.SonarQubeTask
 
 plugins {
     java
@@ -54,6 +55,10 @@ tasks {
         testLogging {
             events("passed", "skipped", "failed")
         }
+    }
+
+    withType<SonarQubeTask>().configureEach {
+        dependsOn(check)
     }
 
     // config JVM target to 1.8 for kotlin compilation tasks
