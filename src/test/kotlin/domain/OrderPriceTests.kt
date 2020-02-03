@@ -109,7 +109,6 @@ class OrderPriceTests {
         }
     }
 
-
     @Test
     fun `Students don't get group discounts`() {
         // Arrange
@@ -126,6 +125,60 @@ class OrderPriceTests {
 
         // Assert
         assertEquals(actual = price, expected = pricePerSeat)
+    }
+
+    @Test
+    fun `priceWithPremiumTicketFee doesn't add fee when ticket is not premium`(){
+        // Arrange
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = false,
+            isPremiumTicket = false,
+            seatRow = 1,
+            seatNr = 1
+        )
+
+        // Act
+        val price = ticket.priceWithPremiumTicketFee
+
+        // Assert
+        assertEquals(actual = price, expected = pricePerSeat)
+    }
+
+    @Test
+    fun `priceWithPremiumTicketFee adds fee of 2 for students`(){
+        // Arrange
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = true,
+            isPremiumTicket = true,
+            seatRow = 1,
+            seatNr = 1
+        )
+
+        // Act
+        val price = ticket.priceWithPremiumTicketFee
+
+        // Assert
+        assertEquals(actual = price, expected = pricePerSeat + 2)
+    }
+
+    @Test
+    fun `priceWithPremiumTicketFee adds fee of 3 for non-students`(){
+        // Arrange
+        val ticket = MovieTicket(
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            isStudentOrder = false,
+            isPremiumTicket = true,
+            seatRow = 1,
+            seatNr = 1
+        )
+
+        // Act
+        val price = ticket.priceWithPremiumTicketFee
+
+        // Assert
+        assertEquals(actual = price, expected = pricePerSeat + 3)
     }
 
     companion object {
