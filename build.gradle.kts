@@ -28,27 +28,29 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.jacocoTestReport {
-    reports {
-        xml.isEnabled = true
-        html.isEnabled = false
+tasks {
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = false
+        }
     }
-}
 
-tasks.check {
-    dependsOn(tasks.jacocoTestReport)
-}
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
+    check {
+        dependsOn(jacocoTestReport)
     }
-}
 
-// config JVM target to 1.8 for kotlin compilation tasks
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "1.8"
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    // config JVM target to 1.8 for kotlin compilation tasks
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 }
 
 val sonarProps = arrayOf("projectKey", "organization", "host.url", "login")
@@ -59,6 +61,8 @@ if(sonarProps.all { project.ext.has("sonar.$it") }) {
             for(propertyName in sonarProps) {
                 property("sonar.$propertyName", project.ext.get("sonar.$propertyName")!!)
             }
+
+            property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
         }
     }
 }
