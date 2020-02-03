@@ -4,6 +4,7 @@ plugins {
     java
     kotlin("jvm") version "1.3.61"
     jacoco
+    id("org.sonarqube") version "2.8"
 }
 
 group = "nl.marc"
@@ -48,4 +49,16 @@ tasks.test {
 // config JVM target to 1.8 for kotlin compilation tasks
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+val sonarProps = arrayOf("projectKey", "organization", "host.url", "login")
+
+if(sonarProps.all { project.ext.has("sonar.$it") }) {
+    sonarqube {
+        properties {
+            for(propertyName in sonarProps) {
+                property("sonar.$propertyName", project.ext.get("sonar.$propertyName")!!)
+            }
+        }
+    }
 }
