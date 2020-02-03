@@ -180,6 +180,30 @@ class OrderPriceTests {
         // Assert
         assertEquals(actual = price, expected = pricePerSeat + 3)
     }
+    @Test
+    fun `calculatePrice adds all prices`() {
+        // Arrange
+        val order = Order(1)
+        val amountOfTickets = 3
+        val tickets = Array(amountOfTickets) {
+            MovieTicket(
+                movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
+                isStudentOrder = false,
+                isPremiumTicket = false,
+                seatRow = 1,
+                seatNr = it
+            )
+        }
+
+        for(ticket in tickets)
+            order.addSeatReservation(ticket)
+
+        // Act
+        val price = order.calculatePrice()
+
+        // Assert
+        assertEquals(actual = price, expected = pricePerSeat * amountOfTickets)
+    }
 
     companion object {
         private val movie = Movie("Star Wars")
