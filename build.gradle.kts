@@ -1,9 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.sonarqube.gradle.SonarQubeTask
 
 plugins {
     java
     kotlin("jvm") version "1.3.61"
     jacoco
+    id("io.gitlab.arturbosch.detekt") version "1.5.0"
     id("org.sonarqube") version "2.8"
 }
 
@@ -28,27 +30,42 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.jacocoTestReport {
+detekt {
     reports {
-        xml.isEnabled = true
-        html.isEnabled = false
+        html.enabled = false
+        xml.enabled = true
+        txt.enabled = false
     }
 }
 
-tasks.check {
-    dependsOn(tasks.jacocoTestReport)
-}
-
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
+tasks {
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = false
+        }
     }
-}
 
-// config JVM target to 1.8 for kotlin compilation tasks
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "1.8"
+    check {
+        dependsOn(jacocoTestReport, detekt)
+        delete("build/jacoco")
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    withType<SonarQubeTask>().configureEach {
+        dependsOn(check)
+    }
+
+    // config JVM target to 1.8 for kotlin compilation tasks
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 }
 
 val sonarProps = arrayOf("projectKey", "organization", "host.url", "login")
@@ -59,6 +76,9 @@ if(sonarProps.all { project.ext.has("sonar.$it") }) {
             for(propertyName in sonarProps) {
                 property("sonar.$propertyName", project.ext.get("sonar.$propertyName")!!)
             }
+
+            property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+            property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
         }
     }
 }
