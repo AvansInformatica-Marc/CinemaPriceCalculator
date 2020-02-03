@@ -48,6 +48,7 @@ tasks {
 
     check {
         dependsOn(jacocoTestReport, detekt)
+        delete("build/jacoco")
     }
 
     test {
