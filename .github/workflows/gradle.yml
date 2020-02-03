@@ -17,15 +17,15 @@ jobs:
       run: git fetch --unshallow
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Run Gradle clean build
-      run: ./gradlew clean build
+    - name: Run Gradle clean
+      run: ./gradlew clean
     - name: Modify gradle.properties for sonarqube secrets
       run: |
         tee -a gradle.properties <<< "sonar.projectKey=${{ secrets.sonar_projectKey }}"
         tee -a gradle.properties <<< "sonar.organization=${{ secrets.sonar_organization }}"
         tee -a gradle.properties <<< "sonar.host.url=${{ secrets.sonar_host_url }}"
         tee -a gradle.properties <<< "sonar.login=${{ secrets.sonar_login }}"
-    - name: Run sonarqube
+    - name: Run Gradle build, test, check & sonarqube
       run: ./gradlew sonarqube
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
