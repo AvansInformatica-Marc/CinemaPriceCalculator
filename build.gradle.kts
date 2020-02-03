@@ -4,6 +4,7 @@ plugins {
     java
     kotlin("jvm") version "1.3.61"
     jacoco
+    id("io.gitlab.arturbosch.detekt") version "1.5.0"
     id("org.sonarqube") version "2.8"
 }
 
@@ -28,6 +29,14 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
+detekt {
+    reports {
+        html.enabled = false
+        xml.enabled = true
+        txt.enabled = false
+    }
+}
+
 tasks {
     jacocoTestReport {
         reports {
@@ -37,7 +46,7 @@ tasks {
     }
 
     check {
-        dependsOn(jacocoTestReport)
+        dependsOn(jacocoTestReport, detekt)
     }
 
     test {
@@ -63,6 +72,7 @@ if(sonarProps.all { project.ext.has("sonar.$it") }) {
             }
 
             property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+            property("sonar.kotlin.detekt.reportPaths", "build/reports/detekt/detekt.xml")
         }
     }
 }
