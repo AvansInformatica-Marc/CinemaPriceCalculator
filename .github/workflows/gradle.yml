@@ -19,8 +19,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Run JaCoCo
-      run: ./gradlew jacocoTestReport
+    - name: Run code checks
+      run: ./gradlew check
     - name: Modify gradle.properties for sonarqube secrets
       run: |
         tee -a gradle.properties <<< "sonar.projectKey=${{ secrets.sonar_projectKey }}"
