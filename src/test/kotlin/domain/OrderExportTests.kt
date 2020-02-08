@@ -33,7 +33,7 @@ class OrderExportTests {
         // Arrange
         val order = Order(1)
         val ticket = MovieTicket(
-            movieScreening = OrderPriceTests.getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
             isStudentOrder = false,
             isPremiumTicket = false,
             seatRow = 1,
@@ -53,7 +53,7 @@ class OrderExportTests {
         // Arrange
         val order = Order(1)
         val ticket = MovieTicket(
-            movieScreening = OrderPriceTests.getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
             isStudentOrder = false,
             isPremiumTicket = false,
             seatRow = 1,

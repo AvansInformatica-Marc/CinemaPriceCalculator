@@ -2,23 +2,37 @@ package domain
 
 import domain.TicketExportFormat.JSON
 import domain.TicketExportFormat.PLAINTEXT
+import domain.pricing.*
+import domain.states.CreatedState
+import domain.states.OrderState
 
 data class Order(val orderNr: Int) {
     private val tickets = mutableListOf<MovieTicket>()
+
+    private val pricingStrategy: OrderPricingStrategy = CombinedPricingStrategy()
+
+    private var state: OrderState = CreatedState()
 
     fun addSeatReservation(ticket: MovieTicket) {
         tickets += ticket
     }
 
-    fun calculatePrice(): Double {
-        val prices = tickets.mapIndexed { index, ticket ->
-            calculatePriceForTicket(tickets.size, index, ticket)
+    private fun resetTicketPrices() {
+        for(ticket in tickets) {
+            ticket.calculatedPrice = ticket.initialPrice
         }
+    }
+
+    fun calculatePrice(): Double {
+        resetTicketPrices()
+
+        pricingStrategy.modifyTicketPrices(tickets)
 
         var totalPrice = 0.0
 
-        for(price in prices)
-            totalPrice += price
+        for(ticket in tickets) {
+            totalPrice += ticket.calculatedPrice
+        }
 
         return totalPrice
     }
@@ -30,4 +44,20 @@ data class Order(val orderNr: Int) {
 
     suspend fun export(exportFormat: TicketExportFormat) =
         writeToFile("Order_$orderNr.${exportFormat.fileExtension}", getExportedFileContent(exportFormat))
+
+    fun submit() {
+        state = state.submit()
+    }
+
+    fun pay() {
+        state = state.pay()
+    }
+
+    fun cancel() {
+        state = state.cancel()
+    }
+
+    fun markProvisional() {
+        state = state.markProvisional()
+    }
 }
