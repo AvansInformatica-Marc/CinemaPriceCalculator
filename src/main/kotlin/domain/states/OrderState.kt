@@ -1,6 +1,6 @@
 package domain.states
 
-abstract class OrderState {
+open class OrderState {
     open fun submit(): OrderState {
         throw StateNotExpectedError()
     }

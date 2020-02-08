@@ -2,7 +2,8 @@ package domain
 
 import domain.TicketExportFormat.JSON
 import domain.TicketExportFormat.PLAINTEXT
-import domain.pricing.*
+import domain.pricing.CombinedPricingStrategy
+import domain.pricing.OrderPricingStrategy
 import domain.states.CreatedState
 import domain.states.OrderState
 
