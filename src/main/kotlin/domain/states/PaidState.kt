@@ -1,3 +1,9 @@
 package domain.states
 
-class PaidState : OrderState()
+import domain.OrderChangedMessage
+
+class PaidState(override var onOrderChanged: ((OrderChangedMessage) -> Unit)? = null) : EmptyOrderState() {
+    init {
+        onOrderChanged?.invoke(OrderChangedMessage.OrderPaidMessage)
+    }
+}

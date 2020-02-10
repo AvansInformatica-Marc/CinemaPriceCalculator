@@ -1,4 +1,4 @@
-package domain
+package domain.utils
 
 inline val Int.isEven
     get() = this % 2 == 0

@@ -1,6 +1,13 @@
 package domain.states
 
-class ProvisionalState : OrderState() {
-    override fun pay() = PaidState()
-    override fun cancel() = CancelledState()
+import domain.OrderChangedMessage
+
+class ProvisionalState(override var onOrderChanged: ((OrderChangedMessage) -> Unit)? = null) : EmptyOrderState() {
+    init {
+        onOrderChanged?.invoke(OrderChangedMessage.PaymentReminderMessage)
+    }
+
+    override fun pay() = PaidState(onOrderChanged)
+
+    override fun cancel() = CancelledState(onOrderChanged)
 }

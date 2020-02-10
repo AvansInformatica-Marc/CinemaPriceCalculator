@@ -1,12 +1,13 @@
 package domain
 
-import domain.*
-import org.junit.jupiter.api.Test
+import domain.di.testModule
+import domain.utils.KoinTest
+import domain.utils.getScreeningForWeekDay
 import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.time.Month
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class OrderTests {
+class OrderTests : KoinTest(testModule) {
     @Test
     fun `calculatePrice adds all prices`() {
         // Arrange
@@ -28,12 +29,12 @@ class OrderTests {
             order.addSeatReservation(ticket)
 
         // Act
-        val price = order.calculatePrice()
+        val price = order.price
 
         // Assert
         assertEquals(
             actual = price,
-            expected = pricePerSeat * amountOfTickets
+            expected = TestPricingStrategy.PRICE * amountOfTickets
         )
     }
 }

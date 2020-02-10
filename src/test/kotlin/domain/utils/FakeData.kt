@@ -1,5 +1,7 @@
-package domain
+package domain.utils
 
+import domain.Movie
+import domain.MovieScreening
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.Month

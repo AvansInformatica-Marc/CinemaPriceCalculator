@@ -1,6 +1,9 @@
 package domain.states
 
-class CreatedState : OrderState() {
-    override fun submit() = SubmittedState()
-    override fun cancel() = CancelledState()
+import domain.OrderChangedMessage
+
+class CreatedState(override var onOrderChanged: ((OrderChangedMessage) -> Unit)? = null) : EmptyOrderState() {
+    override fun submit() = SubmittedState(onOrderChanged)
+
+    override fun cancel() = CancelledState(onOrderChanged)
 }

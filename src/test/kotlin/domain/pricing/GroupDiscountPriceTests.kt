@@ -1,10 +1,12 @@
 package domain.pricing
 
-import domain.*
-import org.junit.jupiter.api.Test
+import domain.MovieTicket
+import domain.utils.getScreeningForWeekDay
+import domain.utils.pricePerSeat
 import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.time.Month
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GroupDiscountPriceTests {
     @Test

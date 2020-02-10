@@ -1,19 +1,19 @@
 package domain.states
 
-open class OrderState {
-    open fun submit(): OrderState {
-        throw StateNotExpectedError()
-    }
+import domain.OrderChangedMessage
 
-    open fun pay(): OrderState {
-        throw StateNotExpectedError()
-    }
+interface OrderState {
+    var onOrderChanged: ((OrderChangedMessage) -> Unit)?
 
-    open fun cancel(): OrderState {
-        throw StateNotExpectedError()
-    }
+    @Throws(StateNotExpectedError::class)
+    fun submit(): OrderState
 
-    open fun markProvisional(): OrderState {
-        throw StateNotExpectedError()
-    }
+    @Throws(StateNotExpectedError::class)
+    fun pay(): OrderState
+
+    @Throws(StateNotExpectedError::class)
+    fun cancel(): OrderState
+
+    @Throws(StateNotExpectedError::class)
+    fun markProvisional(): OrderState
 }

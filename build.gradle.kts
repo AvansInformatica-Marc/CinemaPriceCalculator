@@ -24,6 +24,7 @@ dependencies {
 
     testImplementation("org.koin", "koin-test", "2.0.1")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.6.0")
+    testImplementation(kotlin("test-junit5"))
 }
 
 configure<JavaPluginConvention> {

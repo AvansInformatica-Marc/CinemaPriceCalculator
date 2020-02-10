@@ -2,7 +2,7 @@ package domain.pricing
 
 import domain.MovieTicket
 
-class PremiumTicketPricingStrategy : OrderPricingStrategy() {
+class PremiumTicketPricingStrategy : SingleOrderPricingStrategy() {
     override fun modifyTicketPrice(ticket: MovieTicket, index: Int, totalAmountOfTickets: Int) {
         ticket.calculatedPrice += when {
             !ticket.isPremiumTicket -> 0

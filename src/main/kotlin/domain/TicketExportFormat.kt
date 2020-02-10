@@ -5,7 +5,7 @@ enum class TicketExportFormat {
 }
 
 inline val TicketExportFormat.fileExtension
-    get() = when(this) {
+    get() = when (this) {
         TicketExportFormat.PLAINTEXT -> "txt"
         TicketExportFormat.JSON -> "json"
     }

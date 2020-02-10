@@ -1,9 +1,13 @@
 package domain
 
-import org.junit.jupiter.api.Test
+import domain.di.testModule
+import domain.utils.KoinTest
+import domain.utils.getScreeningForWeekDay
 import java.time.DayOfWeek
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class OrderExportTests {
+class OrderExportTests : KoinTest(testModule) {
     @Test
     fun `Order without tickets exports empty text when export format is plaintext`(){
         // Arrange

@@ -1,3 +1,9 @@
 package domain.states
 
-class CancelledState : OrderState()
+import domain.OrderChangedMessage
+
+class CancelledState(override var onOrderChanged: ((OrderChangedMessage) -> Unit)? = null) : EmptyOrderState() {
+    init {
+        onOrderChanged?.invoke(OrderChangedMessage.OrderCancelledMessage)
+    }
+}

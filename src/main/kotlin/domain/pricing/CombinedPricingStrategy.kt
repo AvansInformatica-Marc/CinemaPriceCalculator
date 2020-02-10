@@ -2,18 +2,10 @@ package domain.pricing
 
 import domain.MovieTicket
 
-class CombinedPricingStrategy : OrderPricingStrategy() {
-    override fun modifyTicketPrice(ticket: MovieTicket, index: Int, totalAmountOfTickets: Int) {
-        for(strategy in STRATEGIES) {
-            strategy.modifyTicketPrice(ticket, index, totalAmountOfTickets)
+class CombinedPricingStrategy(private val strategies: Array<OrderPricingStrategy>) : OrderPricingStrategy {
+    override fun modifyTicketPrices(tickets: Iterable<MovieTicket>) {
+        for (strategy in strategies) {
+            strategy.modifyTicketPrices(tickets)
         }
-    }
-
-    companion object {
-        val STRATEGIES = arrayOf(
-            PremiumTicketPricingStrategy(),
-            GroupDiscountTicketPricingStrategy(),
-            FreeSecondTicketPricingStrategy()
-        )
     }
 }
