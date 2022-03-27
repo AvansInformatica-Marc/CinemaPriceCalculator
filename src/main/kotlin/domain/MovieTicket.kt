@@ -7,7 +7,9 @@ data class MovieTicket(
     private val seatRow: Int,
     private val seatNr: Int
 ) {
-    val price = movieScreening.pricePerSeat
+    val initialPrice = movieScreening.pricePerSeat
+
+    var calculatedPrice = movieScreening.pricePerSeat
 
     val date = movieScreening.date
 

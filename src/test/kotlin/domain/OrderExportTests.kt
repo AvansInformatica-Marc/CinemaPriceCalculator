@@ -1,9 +1,13 @@
 package domain
 
-import org.junit.jupiter.api.Test
+import domain.di.testModule
+import domain.utils.KoinTest
+import domain.utils.getScreeningForWeekDay
 import java.time.DayOfWeek
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class OrderExportTests {
+class OrderExportTests : KoinTest(testModule) {
     @Test
     fun `Order without tickets exports empty text when export format is plaintext`(){
         // Arrange
@@ -33,7 +37,7 @@ class OrderExportTests {
         // Arrange
         val order = Order(1)
         val ticket = MovieTicket(
-            movieScreening = OrderPriceTests.getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
             isStudentOrder = false,
             isPremiumTicket = false,
             seatRow = 1,
@@ -53,7 +57,7 @@ class OrderExportTests {
         // Arrange
         val order = Order(1)
         val ticket = MovieTicket(
-            movieScreening = OrderPriceTests.getScreeningForWeekDay(DayOfWeek.SATURDAY),
+            movieScreening = getScreeningForWeekDay(DayOfWeek.SATURDAY),
             isStudentOrder = false,
             isPremiumTicket = false,
             seatRow = 1,
